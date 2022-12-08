@@ -1,0 +1,72 @@
+{% extends "base_generic.html" %}
+{% block content %}  
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-1 text-gray-800">Тест: {{ test.name }}</h1>
+                    
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <div class="col-lg-6">
+
+
+                            <!-- Progress Small -->
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Процент верных ответов</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-1 small">{{ percent }}% верных ответов</div>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar" role="progressbar" style="width: {{ percent }}%"
+                                            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dropdown No Arrow -->
+                            {% for qa in qa %}
+                            <div class="card mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Вопрос: {{ qa.qustion.text}}</h6>
+                                </div>
+                                <div class="card-body">
+                                <div class="dropdown no-arrow mb-4"><h6 class="m-0 font-weight-bold text-primary">Все ответы:</h6>
+                                {% for ans in qa.answers %}
+                                    <div class="dropdown no-arrow mb-4"><h6 class="m-0 font-weight-bold text-primary">{{ans.text}}</h6>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                                <div class="dropdown no-arrow mb-4"><h6 class="m-0 font-weight-bold text-primary">Ваши ответы:</h6>
+                                {% for ans in qa.user_answers %}
+                                    <div class="dropdown no-arrow mb-4"><h6 class="m-0 font-weight-bold text-primary">{{ans.answer.text}}</h6>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                                <div class="dropdown no-arrow mb-4"><h6 class="m-0 font-weight-bold text-primary">Правильные ответы:</h6>
+                                {% for ans in qa.correct_answers %}
+                                    <div class="dropdown no-arrow mb-4"><h6 class="m-0 font-weight-bold text-primary">{{ans.text}}</h6>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+{% block content %}
+<div id="content">
+                <div class="container-fluid">
+<div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Тесты</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4"><div class="row"><div class="col-sm-12"><table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                    <thead>
+                                        <tr role="row"><th class="sorting sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 216.125px;">Тема</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 358.672px;">Название теста</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 158.781px;">Баллы</th><th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 153.344px;">Статус</th></tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr><th rowspan="1" colspan="1">Тема</th><th rowspan="1" colspan="1">Название теста</th><th rowspan="1" colspan="1">Баллы</th><th rowspan="1" colspan="1">Статус</th></tr>
+                                    </tfoot>
+                                    <tbody>
+                                        {% for item in tests %}
+                                        <tr class="odd">
+                                                <td>{{ item.test_topic }}</td>
+                                                <td>
+                                                {% if item.ut.status == 'п' %}
+                                                <a href="/result/{{item.id}}">
+                                                {% elif item.ut.status == 'о' %}
+                                                <a href="/{{item.id}}">
+                                                {% endif %}
+                                                {{ item.test_name }}</a>
+                                                </td>
+                                                <td>{{ item.score }}</td>
+                                                <td>{{ item.ut.get_status_display }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+{% endblock %}

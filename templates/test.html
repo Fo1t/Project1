@@ -1,0 +1,40 @@
+{% extends "base_generic.html" %}
+{% block content %}
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Grow In Utility -->
+                        <div>
+                            <form class="form-detail" method="post">
+                                <div class="card position-relative">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Вопрос</h6>
+                                    </div>
+                                    {{ form }}
+                                </div>
+                                <div class="form-row-last">
+									{% csrf_token %}
+								<input type="submit" name="register" class="register" value="Отправить">
+                                </div>
+                            </form>
+                            <script>
+                                console.log('{{form.fields}}')
+                            </script>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+{% endblock %}
