@@ -68,10 +68,10 @@ def FormsGenerate(question):
                                                              widget=forms.TextInput(attrs={'readonly': 'readonly'}),
                                                              label='',
                                                              )
-    for answer in Answer.objects.filter(question=question):
-        new_form.fields[f'{answer.id}_checkbox'] = forms.BooleanField(required=False,
-                                                                      label=answer.text
-                                                                      )
+    ANSWER_CHOICES = []
+    for answer in  Answer.objects.filter(question=question):
+        ANSWER_CHOICES.append((str(answer.id), answer.text))
+    new_form.fields['answers'] = forms.ChoiceField(choices = ANSWER_CHOICES, widget=forms.CheckboxSelectMultiple())
     return new_form
 
 
@@ -101,17 +101,16 @@ def CheckAnswers(request):
     question_id = list(request.POST)[0].split('_')[0]
     question = Question.objects.get(id=question_id)
     score = 0
-    if len(request.POST) > 3:
-        user_answer = list(request.POST)[1:-2]
-        if len(Answer.objects.filter(question=question)) != len(user_answer):
-            for answer in user_answer:
-                answer_id = answer.split('_')[0]
-                if Answer.objects.filter(id=answer_id).exists():
-                    UserAnswer(user=request.user, question=question, answer=Answer.objects.get(id=answer_id)).save()
-                    if question.score != 0.0:
-                        coefficient = question.score / len(Answer.objects.filter(question=question, correct_flag=True))
-                        if Answer.objects.get(id=answer_id).correct_flag:
-                            score += question.score / coefficient
+    if (len(request.POST.getlist('answers')) != 0 and
+        len(request.POST.getlist('answers')) != len(Answer.objects.filter(question=question)) and
+        question.score != 0.0):
+        for answer in request.POST.getlist('answers'):
+            if Answer.objects.filter(id=answer).exists():
+                UserAnswer(user=request.user, question=question, answer=Answer.objects.get(id=answer)).save()
+                print(f'{Answer.objects.get(id=answer).correct_flag=}')
+                if Answer.objects.get(id=answer).correct_flag == True:
+                    coefficient = question.score / len(Answer.objects.filter(question=question, correct_flag=True))
+                    score += question.score / coefficient
     user_test = UserTest.objects.get(user=request.user, test=question.test)
     user_test.score = score
     user_test.last_question = question.index + 1
